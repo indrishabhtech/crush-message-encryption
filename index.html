@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crush Message Encryptor</title>
+    <style>
+        body {
+            background-color: #ffefeb;
+            font-family: 'Lobster', cursive;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transition: transform 0.6s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .textbox {
+            width: 90%;
+            max-width: 400px;
+            height: 80px;
+            margin: 20px 0;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ff5e78;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #ff5e78;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #ff3e5d;
+        }
+
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .textbox {
+                width: 95%;
+                height: 60px;
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slider-container">
+        <!-- First Slide: Encryption -->
+        <div class="slide" id="slide-encrypt">
+            <h1>Create encrypted messages for 🥰</h1>
+            <textarea class="textbox" id="message" placeholder="Write your message..."></textarea><br>
+            <button onclick="encryptMessage()">Encrypt Message</button>
+            <button onclick="copyMessage()">Copy Message</button>
+            <p id="output-encrypt"></p>
+        </div>
+
+        <!-- Second Slide: Decryption -->
+        <div class="slide hidden" id="slide-decrypt">
+            <h1>Read the encrypted message</h1>
+            <textarea class="textbox" id="encryptedMessage" placeholder="Paste the encrypted message..."></textarea><br>
+            <button onclick="decryptMessage()">Decrypt Message</button>
+            <p id="output-decrypt"></p>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="navigation">
+            <button onclick="goToEncrypt()">Go to Encrypt</button>
+            <button onclick="goToDecrypt()">Go to Decrypt</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to Encrypt Message
+        function encryptMessage() {
+            let message = document.getElementById('message').value;
+            let encrypted = btoa(message); // Using Base64 encryption
+            document.getElementById('output-encrypt').innerText =  encrypted;
+        }
+
+        // Function to Decrypt Message
+        function decryptMessage() {
+            let encryptedMessage = document.getElementById('encryptedMessage').value;
+            let decrypted = atob(encryptedMessage); // Base64 decoding
+            document.getElementById('output-decrypt').innerText = "Decrypted Message: " + decrypted;
+        }
+
+        // Function to Copy Encrypted Message
+        function copyMessage() {
+            let outputText = document.getElementById('output-encrypt').innerText;
+            navigator.clipboard.writeText(outputText);
+            alert("Message copied!");
+        }
+
+        // Slider Logic: Slide between encryption and decryption
+        function goToEncrypt() {
+            document.getElementById('slide-encrypt').style.transform = 'translateX(0)';
+            document.getElementById('slide-decrypt').style.transform = 'translateX(100%)';
+            document.getElementById('slide-encrypt').classList.remove('hidden');
+            document.getElementById('slide-decrypt').classList.add('hidden');
+        }
+
+        function goToDecrypt() {
+            document.getElementById('slide-encrypt').style.transform = 'translateX(-100%)';
+            document.getElementById('slide-decrypt').style.transform = 'translateX(0)';
+            document.getElementById('slide-encrypt').classList.add('hidden');
+            document.getElementById('slide-decrypt').classList.remove('hidden');
+        }
+    </script>
+
+</body>
+</html>
